@@ -41,21 +41,21 @@ public class ApplicationTest extends TestCase{
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
 		// Write to System.out
-		marshaller.marshal(rinkList, System.out);
+//		marshaller.marshal(rinkList, System.out);
 
 		// Write to File
-		marshaller.marshal(rinkList, new FileOutputStream(RINKS_XML));
+//		marshaller.marshal(rinkList, new FileOutputStream(RINKS_XML));
 
 		// get variables from our xml file, created before
-		LOG.info("Output from our XML File: ");
-		Unmarshaller unmarshaller = context.createUnmarshaller();
+//		LOG.info("Output from our XML File: ");
+//		Unmarshaller unmarshaller = context.createUnmarshaller();
 		
-		Rinks rinks2 = (Rinks)unmarshaller.unmarshal(new File(RINKS_XML));
-		List<Rink> list = rinks2.getRinkList();
+//		Rinks rinks2 = (Rinks)unmarshaller.unmarshal(new File(RINKS_XML));
+//		List<Rink> list = rinks2.getRinkList();
 //
-		for (Rink rink : list) {
-			LOG.info("Rink: " + rink.getName() + " condition " + rink.getCondition());
-		}
+//		for (Rink rink : list) {
+//			LOG.info("Rink: " + rink.getName() + " condition " + rink.getCondition());
+//		}
 
 	}
 
