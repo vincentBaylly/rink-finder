@@ -16,9 +16,9 @@ import org.apache.commons.logging.LogFactory;
 
 import com.rink.utils.ComparatorForRink;
 import com.rink.utils.RinkUtils;
+import com.rink.xml.jaxb.model.Borough;
 import com.rink.xml.jaxb.model.Rink;
-import com.rink.xml.jaxb.model.impl.Borough;
-import com.rink.xml.jaxb.model.impl.Rinks;
+import com.rink.xml.jaxb.model.Rinks;
 
 public class Runner {
 
