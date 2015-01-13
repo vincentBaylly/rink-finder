@@ -32,7 +32,7 @@ public class RinkAdapter extends XmlAdapter<Object, Rink> {
 
 			}
 			
-			rink.setImageIcon(RinkUtils.createImageIcon("../../../icon/" + rink.getRinkType() + ".png", rink.toString()));
+			rink.setImageIcon(RinkUtils.createImageIcon("/icon/" + rink.getRinkType() + ".png", rink.toString()));
 		}
 		
 		
