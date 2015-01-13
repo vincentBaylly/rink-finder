@@ -57,7 +57,25 @@ public class RinkUtils {
 
         return parsedDate;
     }
-
+    
+    	/** 
+     * Returns an ImageIcon, or null if the path was invalid.
+     * @param description
+     * @param path
+     * @return ImageIcon
+     */
+    public static ImageIcon createImageIcon(String path,
+                                               String description) {
+        URL imgURL = RinkUtils.class.getResource(path);
+        LOG.info("rink path " + imgURL);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL, description);
+        } else {
+        	LOG.error("Couldn't find file: " + path);
+            return null;
+        }
+    }
+    
     public static void printRinks(Rinks rinks) {
 
         String lastBorough = "";
