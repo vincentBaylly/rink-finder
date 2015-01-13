@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
@@ -54,7 +55,8 @@ public class Frame extends JFrame {
 
 	private JMenuItem exitMenuItem;
 	private JMenu fileMenu;
-	private JButton findButton;
+	private JButton boroughButton;
+	private JButton condButton;
 	private JLabel handNameOut;
 	private JMenuBar menuBar;
 	private JScrollPane scrollPane;
@@ -71,7 +73,8 @@ public class Frame extends JFrame {
 	 */
 	private void initComponents() {
 
-		findButton = new JButton();
+		boroughButton = new JButton();
+		condButton = new JButton();
 		handNameOut = new JLabel();
 		menuBar = new JMenuBar();
 		fileMenu = new JMenu();
@@ -84,13 +87,20 @@ public class Frame extends JFrame {
 
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-		findButton.setText("Find");
-		findButton.addActionListener(new ActionListener() {
+		boroughButton.setText("Sort by Borough");
+		boroughButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				findButtonActionPerformed(evt);
+				boroughButtonActionPerformed(evt);
 			}
 		});
-
+		
+		condButton.setText("Sort by Condition");
+		condButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				condButtonActionPerformed(evt);
+			}
+		});
+		
 		fileMenu.setMnemonic('f');
 		fileMenu.setText("File");
 
@@ -107,8 +117,13 @@ public class Frame extends JFrame {
 
 		setJMenuBar(menuBar);
 		
+		JPanel panel = new JPanel();
+		
+		panel.add(BorderLayout.EAST, boroughButton);
+		panel.add(BorderLayout.WEST, condButton);
+		
 		getContentPane().add(BorderLayout.CENTER, scrollPane);
-		getContentPane().add(BorderLayout.SOUTH, findButton);
+		getContentPane().add(BorderLayout.SOUTH, panel);
 		
 		pack();
 	}
@@ -124,12 +139,12 @@ public class Frame extends JFrame {
 
 	/**
 	 * find rinks
-	 * 
+	 * sort by borough
 	 * @param evt
 	 */
-	private void findButtonActionPerformed(ActionEvent evt) {
+	private void boroughButtonActionPerformed(ActionEvent evt) {
 
-		Rinks result = unmarshallFlux();
+		Rinks result = unmarshallFlux("borough");
 		RinkUtils.printRinks(result);
 		handNameOut.setText("");
 		ImageIcon imageIcon = new ImageIcon(append(result.getRinkList()));
@@ -139,8 +154,26 @@ public class Frame extends JFrame {
 		
 		LOG.info(result);
 	}
+	
+	/**
+	 * find rinks
+	 * sort by condition
+	 * @param evt
+	 */
+	private void condButtonActionPerformed(ActionEvent evt) {
 
-	public static Rinks unmarshallFlux() {
+		Rinks result = unmarshallFlux("condition");
+		RinkUtils.printRinks(result);
+		handNameOut.setText("");
+		ImageIcon imageIcon = new ImageIcon(append(result.getRinkList()));
+		handNameOut.setIcon(imageIcon);
+		handNameOut.setHorizontalAlignment(SwingConstants.CENTER);
+//		scrollPane.setVisible(true);
+		
+		LOG.info(result);
+	}
+	
+	public static Rinks unmarshallFlux(String sortType) {
 
 		Rinks rinks = null;
 
@@ -166,8 +199,12 @@ public class Frame extends JFrame {
 
 				rinks = (Rinks) unmarshaller.unmarshal(new File(RINKS_XML));
 			}
-
-			Collections.sort(rinks.getRinkList(), comparatorForRink.new BoroughComparator());
+			
+			if("borough".equalsIgnoreCase(sortType)){
+				Collections.sort(rinks.getRinkList(), comparatorForRink.new BoroughComparator());
+			}else if("condition".equalsIgnoreCase(sortType)){
+				Collections.sort(rinks.getRinkList(), comparatorForRink.new RinkConditionComparator());
+			}
 
 		} catch (JAXBException e) {
 			e.printStackTrace();
