@@ -1,225 +1,209 @@
 package com.rink.window;
 
-import com.rink.utils.ComparatorForRink;
-import com.rink.utils.ComparatorForRink.BoroughComparator;
-import com.rink.utils.RinkUtils;
-import com.rink.xml.jaxb.model.Borough;
-import com.rink.xml.jaxb.model.Rink;
-import com.rink.xml.jaxb.model.Rinks;
 import java.awt.Container;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
-import javax.swing.*;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.rink.utils.ComparatorForRink;
+import com.rink.utils.RinkUtils;
+import com.rink.xml.jaxb.model.Borough;
+import com.rink.xml.jaxb.model.Rink;
+import com.rink.xml.jaxb.model.Rinks;
+
+@SuppressWarnings("serial")
 public class Frame extends JFrame {
-    
-    private static final Log LOG = LogFactory.getLog(Frame.class);
-    
-    private static final String MTL_WEBSITE = "www2.ville.montreal.qc.ca";
 
-    private static final String RINKS_XML = "src/main/resources/rinks-jaxb.xml";
+	private static final Log LOG = LogFactory.getLog(Frame.class);
 
-    private static final String RINKS_XML_URL = "http://www2.ville.montreal.qc.ca/services_citoyens/pdf_transfert/L29_PATINOIRE.xml";
+	private static final String MTL_WEBSITE = "www2.ville.montreal.qc.ca";
 
-    private static final ComparatorForRink comparatorForRink = new ComparatorForRink();
-    
-    private JMenuItem exitMenuItem;
-    private JMenu fileMenu;
-    private JButton playButton;
-    private JEditorPane handNameOut;
-    private JMenuBar menuBar;
-    private JScrollPane scrollPane;
+	private static final String RINKS_XML = "src/main/resources/rinks-jaxb.xml";
 
-    /**
-     * Creates new form Frame
-     */
-    public Frame() {
-        initComponents();
-    }
+	private static final String RINKS_XML_URL = "http://www2.ville.montreal.qc.ca/services_citoyens/pdf_transfert/L29_PATINOIRE.xml";
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     */
-    @SuppressWarnings("unchecked")
-    private void initComponents() {
+	private static final ComparatorForRink comparatorForRink = new ComparatorForRink();
 
-        playButton = new JButton();
-        handNameOut = new JEditorPane();
-        handNameOut.setEditable(false); // Read-only
-        menuBar = new JMenuBar();
-        fileMenu = new JMenu();
-        exitMenuItem = new JMenuItem();
-        scrollPane = new JScrollPane(handNameOut, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	private JMenuItem exitMenuItem;
+	private JMenu fileMenu;
+	private JButton findButton;
+	private JLabel handNameOut;
+	private JMenuBar menuBar;
+	private JScrollPane scrollPane;
 
-        Container con = getContentPane();
-        con.setBackground(new java.awt.Color(0, 0, 51));
+	/**
+	 * Creates new form Frame
+	 */
+	public Frame() {
+		initComponents();
+	}
 
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        
-        playButton.setText("Find");
-        playButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                findButtonActionPerformed(evt);
-            }
-        });
+	/**
+	 * This method is called from within the constructor to initialize the form.
+	 */
+	private void initComponents() {
 
-        fileMenu.setMnemonic('f');
-        fileMenu.setText("File");
+		findButton = new JButton();
+		handNameOut = new JLabel();
+		menuBar = new JMenuBar();
+		fileMenu = new JMenu();
+		exitMenuItem = new JMenuItem();
+		scrollPane = new JScrollPane(handNameOut, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setVisible(false);
 
-        exitMenuItem.setMnemonic('x');
-        exitMenuItem.setText("Exit");
-        exitMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                exitMenuItemActionPerformed(evt);
-            }
-        });
-        fileMenu.add(exitMenuItem);
+		Container con = getContentPane();
+		con.setBackground(new java.awt.Color(0, 0, 51));
 
-        menuBar.add(fileMenu);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        setJMenuBar(menuBar);
-        
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(324, 324, 324)
-                        .addComponent(playButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(scrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 776, Short.MAX_VALUE))))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.CENTER, layout.createSequentialGroup()
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(playButton))
-                .addGap(109, 109, 109))
-        );
-        
-        pack();
-    }
+		findButton.setText("Find");
+		findButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				findButtonActionPerformed(evt);
+			}
+		});
 
-    /**
-     * exit menu catch event
-     *
-     * @param evt
-     */
-    private void exitMenuItemActionPerformed(ActionEvent evt) {
-        System.exit(0);
-    }
-    
-        /**
-     * find rinks
-     * @param evt 
-     */
-    private void findButtonActionPerformed(ActionEvent evt) {
-        String result = unmarshallFlux().toString();
-        LOG.info(result);
-        handNameOut.setText(result);
-    }
-    
-    public static StringBuilder unmarshallFlux() {
-        
-        StringBuilder sb = null;
-        
-        try {
-            // create JAXB context and instantiate marshaller
-            JAXBContext context = null;
-            context = JAXBContext.newInstance(Rinks.class, Rink.class, Borough.class);
+		fileMenu.setMnemonic('f');
+		fileMenu.setText("File");
 
-            Unmarshaller unmarshaller = null;
+		exitMenuItem.setMnemonic('x');
+		exitMenuItem.setText("Exit");
+		exitMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				exitMenuItemActionPerformed(evt);
+			}
+		});
+		fileMenu.add(exitMenuItem);
 
-            unmarshaller = context.createUnmarshaller();
-            Rinks rinks = null;
+		menuBar.add(fileMenu);
 
-            if (RinkUtils.isInternetReachable(MTL_WEBSITE)) {
+		setJMenuBar(menuBar);
 
-                URL u = new URL(RINKS_XML_URL);
-                InputStream in = u.openStream();
-                rinks = (Rinks) unmarshaller.unmarshal(in);
-            } else {
+		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+		getContentPane().setLayout(layout);
 
-                rinks = (Rinks) unmarshaller.unmarshal(new File(RINKS_XML));
-            }
+		pack();
+	}
 
-            //Sort by Rink Name
-//			Collections.sort(rinks.getRinkList(), comparatorForRink.new RinkNameComparator());
-//			printRinks(rinks);
-            //Sort by Borough Name
-            Collections.sort(rinks.getRinkList(), comparatorForRink.new BoroughComparator());
-            sb = resultForRinks(rinks);
+	/**
+	 * exit menu catch event
+	 * 
+	 * @param evt
+	 */
+	private void exitMenuItemActionPerformed(ActionEvent evt) {
+		System.exit(0);
+	}
 
-            //Sort by Rink Condition
-//			Collections.sort(rinks.getRinkList(), comparatorForRink.new RinkConditionComparator());
-//			printRinks(rinks);
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        return sb;
-    }
-    
-    public static StringBuilder resultForRinks(Rinks rinks) {
-        
-        StringBuilder sb = new StringBuilder();
-        String lastBorough = "";
+	/**
+	 * find rinks
+	 * 
+	 * @param evt
+	 */
+	private void findButtonActionPerformed(ActionEvent evt) {
 
-        for (Rink rink : (List<Rink>) rinks.getRinkList()) {
+		Rinks result = unmarshallFlux();
+		RinkUtils.printRinks(result);
+		handNameOut.setText("");
+		ImageIcon imageIcon = new ImageIcon(append(result.getRinkList()));
+		handNameOut.setIcon(imageIcon);
+		handNameOut.setHorizontalAlignment(SwingConstants.RIGHT);
+		scrollPane.setVisible(true);
+		
+		LOG.info(result);
+	}
 
-            if (!lastBorough.equalsIgnoreCase(rink.getBorough().getKey())) {
-                sb.append("\n-----------------------------------------------\n");
-                sb.append("Updated at : " + rink.getBorough().getUpdated() + "");
-                sb.append("\n-----------------------------------------------\n");
-                lastBorough = rink.getBorough().getKey();
-            }
+	public static Rinks unmarshallFlux() {
 
-            if (Rink.TEAM_SPORT_RINK.equalsIgnoreCase(rink.getRinkType())) {
-                sb.append("\n         ");
-                sb.append("\n\\       " + rink.getName());
-                sb.append("\n \\      " + rink.getBorough().getName());
-                sb.append("\n  \\_O_  " + rink.getCondition());
-            } else if (Rink.LANDSCAPED_RINK.equalsIgnoreCase(rink.getRinkType())) {
-                sb.append("\n      __  ");
-                sb.append("\n     (  ) " + rink.getName());
-                sb.append("\n| |__||  " + rink.getBorough().getName());
-                sb.append("\n|_____)  " + rink.getCondition());
-                sb.append("\n _|_|_)  ");
+		Rinks rinks = null;
 
-            } else if (Rink.OPEN_SKATE_RINK.equalsIgnoreCase(rink.getRinkType())) {
-                sb.append("\n         ");
-                sb.append("\n| |__    " + rink.getName());
-                sb.append("\n|_____)  " + rink.getBorough().getName());
-                sb.append("\n _|_|_)  " + rink.getCondition());
-            }
+		try {
+			// create JAXB context and instantiate marshaller
+			JAXBContext context = null;
+			context = JAXBContext.newInstance(Rinks.class, Rink.class, Borough.class);
 
-        }
-        
-        return sb;
-    }
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+			
+			Marshaller marshaller = context.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+			if (RinkUtils.isInternetReachable(MTL_WEBSITE)) {
+
+				URL u = new URL(RINKS_XML_URL);
+				InputStream in = u.openStream();
+				rinks = (Rinks) unmarshaller.unmarshal(in);
+
+				// Write to File
+				marshaller.marshal(rinks, new FileOutputStream(RINKS_XML));
+			} else {
+
+				rinks = (Rinks) unmarshaller.unmarshal(new File(RINKS_XML));
+			}
+
+			Collections.sort(rinks.getRinkList(), comparatorForRink.new BoroughComparator());
+
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return rinks;
+	}
+
+	/**
+	 * add flop images to make one
+	 * 
+	 * @param cards
+	 * @return
+	 */
+	public static Image append(List<Rink> rinksResult) {
+
+		BufferedImage buf = null;
+
+		if (rinksResult.get(0) != null && rinksResult.get(0).getImageIcon() != null) {
+			int wMax = rinksResult.get(0).getImageIcon().getImage().getWidth(null);
+			int hMax = 800;
+			int h1 = 0;
+			buf = new BufferedImage(wMax, hMax, BufferedImage.TYPE_INT_ARGB);
+			for (Rink rink : rinksResult) {
+				if (rink != null) {
+
+					Graphics2D g2 = buf.createGraphics();
+					g2.drawImage(rink.getImageIcon().getImage(), 0, h1, null);
+					h1 += rink.getImageIcon().getImage().getWidth(null);
+
+				}
+			}
+
+		}
+
+		return buf;
+	}
 
 }
