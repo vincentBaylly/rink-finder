@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement(name = "patinoire")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -38,6 +38,9 @@ public class Rink{
 	
 	//TODO see if it can be an enum
 	private String rinkType;
+	
+	@XmlTransient
+	private ImageIcon imageIcon;
 	
 	public String getName() {
 		return name;
@@ -103,4 +106,32 @@ public class Rink{
 		this.rinkType = rinkType;
 	}
 	
+		public ImageIcon getImageIcon() {
+        return imageIcon;
+    }
+
+    public void setImageIcon(ImageIcon imageIcon) {
+        this.imageIcon = imageIcon;
+    }
+    
+    public String toString(){
+    	
+    	String rink = "name " +  name;
+    	
+    	rink += "borough " + borough;
+
+    	rink += "opened " + opened;
+    	
+    	rink += "opened " + cleared;
+    	
+    	rink +=  "arrose " + sprayed;
+    	
+    	rink += "resurface " + resurfaced;
+    	
+    	rink += "condition " + condition;
+    	
+    	rink += "type of rink : " + rinkType;
+    	
+    	return rink;
+    }
 }
