@@ -1,5 +1,7 @@
 package com.rink.window;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -75,7 +77,7 @@ public class Frame extends JFrame {
 		fileMenu = new JMenu();
 		exitMenuItem = new JMenuItem();
 		scrollPane = new JScrollPane(handNameOut, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setVisible(false);
+//		scrollPane.setVisible(false);
 
 		Container con = getContentPane();
 		con.setBackground(new java.awt.Color(0, 0, 51));
@@ -104,10 +106,10 @@ public class Frame extends JFrame {
 		menuBar.add(fileMenu);
 
 		setJMenuBar(menuBar);
-
-		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-		getContentPane().setLayout(layout);
-
+		
+		getContentPane().add(BorderLayout.CENTER, scrollPane);
+		getContentPane().add(BorderLayout.SOUTH, findButton);
+		
 		pack();
 	}
 
@@ -132,8 +134,8 @@ public class Frame extends JFrame {
 		handNameOut.setText("");
 		ImageIcon imageIcon = new ImageIcon(append(result.getRinkList()));
 		handNameOut.setIcon(imageIcon);
-		handNameOut.setHorizontalAlignment(SwingConstants.RIGHT);
-		scrollPane.setVisible(true);
+		handNameOut.setHorizontalAlignment(SwingConstants.CENTER);
+//		scrollPane.setVisible(true);
 		
 		LOG.info(result);
 	}
@@ -177,26 +179,32 @@ public class Frame extends JFrame {
 	}
 
 	/**
-	 * add flop images to make one
+	 * add an icon on rink
 	 * 
-	 * @param cards
+	 * @param rinks
 	 * @return
 	 */
 	public static Image append(List<Rink> rinksResult) {
 
 		BufferedImage buf = null;
-
+		
 		if (rinksResult.get(0) != null && rinksResult.get(0).getImageIcon() != null) {
-			int wMax = rinksResult.get(0).getImageIcon().getImage().getWidth(null);
-			int hMax = 800;
+			int wMax = 500;
+			int hMax = 20000;
 			int h1 = 0;
 			buf = new BufferedImage(wMax, hMax, BufferedImage.TYPE_INT_ARGB);
+			
 			for (Rink rink : rinksResult) {
 				if (rink != null) {
 
 					Graphics2D g2 = buf.createGraphics();
 					g2.drawImage(rink.getImageIcon().getImage(), 0, h1, null);
-					h1 += rink.getImageIcon().getImage().getWidth(null);
+					g2.setColor(Color.red);
+					g2.drawLine(0, h1, rink.getImageIcon().getImage().getWidth(null) + 300, h1);
+					g2.drawString(rink.getName(), rink.getImageIcon().getImage().getWidth(null) + 10, h1 + 15);
+					g2.drawString(rink.getBorough().getName(), rink.getImageIcon().getImage().getWidth(null) + 10, h1 + 30);
+					g2.drawString(rink.getCondition(), rink.getImageIcon().getImage().getWidth(null) + 10, h1 + 45);
+					h1 += rink.getImageIcon().getImage().getWidth(null) + 20;
 
 				}
 			}
