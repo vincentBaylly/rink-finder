@@ -17,9 +17,11 @@ public class Runner {
      */
     public static void main(String[] args) {
 
-        Frame frame = new Frame();
-        frame.setSize(800, 600);
-        frame.setVisible(true);
+        LOG.debug("run rink-finder application");
+		
+		String[] contextPaths = new String[] {"app-context.xml"};
+		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext(contextPaths);
+		applicationContext.close();
 
     }
 
