@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
+          "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+	<bean id="rinkFrame" class="com.rink.window.RinkFrame"
+		init-method="initComponents">
+		<property name="treatment">
+			<bean id="treatment" class="com.rink.app.Treatment" init-method="initRinks"/>
+		</property>
+	</bean>
+
+</beans>
