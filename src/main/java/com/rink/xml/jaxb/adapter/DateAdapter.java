@@ -7,7 +7,11 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 public class DateAdapter extends XmlAdapter<String, Date>{
 
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private final SimpleDateFormat dateFormat;
+
+    public DateAdapter() {
+        this.dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    }
 
     @Override
     public String marshal(Date v) throws Exception {

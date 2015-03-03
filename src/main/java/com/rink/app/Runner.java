@@ -4,8 +4,7 @@ import java.net.URISyntaxException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import com.rink.window.Frame;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Runner {
 
@@ -19,9 +18,9 @@ public class Runner {
 
         LOG.debug("run rink-finder application");
 		
-		String[] contextPaths = new String[] {"app-context.xml"};
-		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext(contextPaths);
-		applicationContext.close();
+        String[] contextPaths = new String[] {"app-context.xml"};
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext(contextPaths);
+        applicationContext.close();
 
     }
 

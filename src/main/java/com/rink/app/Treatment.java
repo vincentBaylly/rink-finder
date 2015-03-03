@@ -1,7 +1,6 @@
 package com.rink.app;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -21,6 +20,7 @@ import com.rink.utils.RinkUtils;
 import com.rink.xml.jaxb.model.Borough;
 import com.rink.xml.jaxb.model.Rink;
 import com.rink.xml.jaxb.model.Rinks;
+import java.io.IOException;
 
 public class Treatment {
 	
@@ -78,7 +78,7 @@ public class Treatment {
 				LOG.debug(rinks);
 				
 				// Write to File
-				marshaller.marshal(getRinks(), new FileOutputStream(RINKS_XML));
+				//marshaller.marshal(getRinks(), new FileOutputStream(new File(RINKS_XML)));
 			} else {
 
 				setRinks((Rinks) unmarshaller.unmarshal(new File(RINKS_XML)));
@@ -98,10 +98,10 @@ public class Treatment {
 			
 			setAvailableBorough(boroughAvailable);
 
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (JAXBException ex) {
+			LOG.error("jaxb Exception on rink marshalling element", ex);
+		} catch (IOException ex) {
+			LOG.error("IOException on rink marshalling element", ex);
 		}
 
 	}

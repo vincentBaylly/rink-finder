@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<patinoires>
+    <patinoire>
+        <nom>Aire de patinage libre, Kent (sud) (PSE)</nom>
+        <arrondissement>
+            <cle>cdn</cle>
+            <nom_arr>CÃ´te-des-Neiges - Notre-Dame-de-GrÃ¢ce</nom_arr>
+            <date_maj>2015-01-05 16:52:00</date_maj>
+        </arrondissement>
+        <ouvert>false</ouvert>
+        <deblaye>false</deblaye>
+        <arrose>false</arrose>
+        <resurface>false</resurface>
+        <condition>Mauvaise</condition>
+    </patinoire>
+    <patinoire>
+        <nom>Grande patinoire de hockey, Parc Beaubien (PSE)</nom>
+        <arrondissement>
+            <cle>out</cle>
+            <nom_arr>CÃ´te-des-Neiges - Notre-Dame-de-GrÃ¢ce</nom_arr>
+            <date_maj>2015-01-06 14:02:11</date_maj>
+        </arrondissement>
+        <ouvert>false</ouvert>
+        <deblaye>false</deblaye>
+        <arrose>false</arrose>
+        <resurface>false</resurface>
+        <condition>Mauvaise</condition>
+    </patinoire>
+    <patinoire>
+        <nom>Aire de patinage libre, William-Hurst (PP)</nom>
+        <arrondissement>
+            <cle>cdn</cle>
+            <nom_arr>CÃ´te-des-Neiges - Notre-Dame-de-GrÃ¢ce</nom_arr>
+            <date_maj>2015-01-05 16:52:00</date_maj>
+        </arrondissement>
+        <ouvert>false</ouvert>
+        <deblaye>false</deblaye>
+        <arrose>false</arrose>
+        <resurface>false</resurface>
+        <condition>Mauvaise</condition>
+    </patinoire>
+    <patinoire>
+        <nom>Aire de patinage libre, De la Savane (PPL)</nom>
+        <arrondissement>
+            <cle>cdn</cle>
+            <nom_arr>CÃ´te-des-Neiges - Notre-Dame-de-GrÃ¢ce</nom_arr>
+            <date_maj>2015-01-05 16:52:00</date_maj>
+        </arrondissement>
+        <ouvert>false</ouvert>
+        <deblaye>false</deblaye>
+        <arrose>false</arrose>
+        <resurface>false</resurface>
+        <condition>Mauvaise</condition>
+    </patinoire>
+</patinoires>

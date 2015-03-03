@@ -12,38 +12,42 @@ import com.rink.xml.jaxb.adapter.DateAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Borough {
 	
-	@XmlElement(name = "cle")
-	private String key;
-	
-	@XmlElement(name = "nom_arr")
-	private String name;
-	
-	@XmlElement(name = "date_maj")
-	@XmlJavaTypeAdapter(DateAdapter.class)
-	private Date updated;
+    @XmlElement(name = "cle")
+    private String key;
 
-	public String getKey() {
-		return key;
-	}
+    @XmlElement(name = "nom_arr")
+    private String name;
 
-	public void setKey(String key) {
-		this.key = key;
-	}
+    @XmlElement(name = "date_maj")
+    @XmlJavaTypeAdapter(DateAdapter.class)
+    private Date updated;
 
-	public String getName() {
-		return name;
-	}
+    public String getKey() {
+            return key;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setKey(String key) {
+            this.key = key;
+    }
 
-	public Date getUpdated() {
-		return updated;
-	}
+    public String getName() {
+            return name;
+    }
 
-	public void setUpdated(Date updated) {
-		this.updated = updated;
-	}
-	
+    public void setName(String name) {
+            this.name = name;
+    }
+
+    public Date getUpdated() {
+            return updated;
+    }
+
+    public void setUpdated(Date updated) {
+            this.updated = updated;
+    }
+
+    @Override
+    public String toString(){
+        return name;
+    }
 }

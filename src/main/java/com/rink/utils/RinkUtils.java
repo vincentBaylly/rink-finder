@@ -1,22 +1,24 @@
 package com.rink.utils;
 
-import com.rink.app.Runner;
 import com.rink.xml.jaxb.model.Rink;
 import com.rink.xml.jaxb.model.Rinks;
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import javax.swing.ImageIcon;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class RinkUtils {
-    
+
     private static final Log LOG = LogFactory.getLog(RinkUtils.class);
-    
+
     public static boolean isInternetReachable(String hostnameOrIP) throws UnknownHostException, IOException {
 
         Socket socket = null;
@@ -28,7 +30,8 @@ public class RinkUtils {
             if (socket != null) {
                 try {
                     socket.close();
-                } catch (IOException e) {
+                } catch (IOException ex) {
+                    LOG.error("the url " + hostnameOrIP + " is not reachable ", ex);
                 }
             }
         }
@@ -51,31 +54,40 @@ public class RinkUtils {
         try {
             parsedDate = sdf.parse(inputDate);
             System.out.println(parsedDate);
-        } catch (ParseException e) {
-            System.out.println("Unparseable using " + sdf);
+        } catch (ParseException ex) {
+            LOG.error("Unparseable using " + sdf, ex);
         }
 
         return parsedDate;
     }
-    
-    	/** 
+
+    /**
      * Returns an ImageIcon, or null if the path was invalid.
+     *
      * @param description
      * @param path
      * @return ImageIcon
      */
     public static ImageIcon createImageIcon(String path,
-                                               String description) {
-        URL imgURL = RinkUtils.class.getResource(path);
-        LOG.info("rink path " + imgURL);
-        if (imgURL != null) {
-            return new ImageIcon(imgURL, description);
-        } else {
-        	LOG.error("Couldn't find file: " + path);
-            return null;
+            String description) {
+
+        File imageFile = new File(path);
+        ImageIcon imageIcon = null;
+
+        try {
+
+            LOG.info("rink path " + imageFile.getCanonicalPath());
+            imageIcon = new ImageIcon(imageFile.toURI().toURL(), description);
+
+        } catch (MalformedURLException ex) {
+            LOG.error("Couldn't find file: " + path, ex);
+        } catch (IOException ex) {
+            LOG.error("Couldn't find file: " + path, ex);
         }
+
+        return imageIcon;
     }
-    
+
     public static void printRinks(Rinks rinks) {
 
         String lastBorough = "";
