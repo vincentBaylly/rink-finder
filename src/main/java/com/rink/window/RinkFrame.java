@@ -37,6 +37,8 @@ public class RinkFrame extends JFrame {
 
 	private static final Log LOG = LogFactory.getLog(RinkFrame.class);
 	
+	private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
 	private Treatment treatment;
 	
 	private JMenuItem exitMenuItem;
