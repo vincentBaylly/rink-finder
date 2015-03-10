@@ -236,7 +236,8 @@ public class RinkFrame extends JFrame {
                                     g2.drawLine(0, h1, rink.getImageIcon().getImage().getWidth(null) + 300, h1);
                                     g2.drawString(rink.getName(), rink.getImageIcon().getImage().getWidth(null) + 10, h1 + 15);
                                     g2.drawString(rink.getBorough().getName(), rink.getImageIcon().getImage().getWidth(null) + 10, h1 + 30);
-                                    g2.drawString(rink.getCondition(), rink.getImageIcon().getImage().getWidth(null) + 10, h1 + 45);
+                                    g2.drawString(rink.getCondition().getLabel(), rink.getImageIcon().getImage().getWidth(null) + 10, h1 + 45);
+				    g2.drawString(dateFormat.format(rink.getBorough().getUpdated()), rink.getImageIcon().getImage().getWidth(null) + 150, h1 + 45);
                                     h1 += rink.getImageIcon().getImage().getHeight(null) + 20;
 
                             }
