@@ -10,7 +10,7 @@ import org.apache.commons.logging.LogFactory;
 
 public class RinkAdapter extends XmlAdapter<Object, Rink> {
         
-    private static final Log LOG = LogFactory.getLog(RinkFrame.class);
+    private static final Log LOG = LogFactory.getLog(Rink.class);
     
 	public RinkAdapter() {
 	}
